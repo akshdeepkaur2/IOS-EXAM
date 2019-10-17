@@ -15,6 +15,12 @@ var baba = [SKSpriteNode]()
     var ThingBlockArray = [SKSpriteNode]()
     var isBlockArray = [SKSpriteNode]()
     var ResultBlockArray = [SKSpriteNode]()
+    var babaMovingLeft:Bool = false
+    var babaMovingRight:Bool = false
+    var babaMovingUp:Bool = false
+    var babaMovingDown:Bool = false
+    var MouseX:CGFloat = 0.0
+    var MouseY:CGFloat = 0.0
     func createbaba() -> SKSpriteNode{
         let baba = SKSpriteNode(imageNamed: "rabbit64")
         baba.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -119,7 +125,15 @@ var baba = [SKSpriteNode]()
     }
     
     override func didMove(to view: SKView) {
-        self.physicsWorld.contactDelegate = self
+       let baba = SKSpriteNode(imageNamed:"rabbit64")
+        baba.position = CGPoint(x: 192, y: -128)
+        addChild(baba)
+        let moveBottomLeft = SKAction.move(to: CGPoint(x: 100,y: 100), duration:2.0)
+        baba.run(moveBottomLeft)
+        let moveRight = SKAction.moveBy(x: 50, y:0, duration:1.0)
+        baba.run(moveRight)
+        let moveBottom = SKAction.moveBy(x: 0, y:-100, duration:3.0)
+        baba.run(moveBottom)
     }
    
     func didBegin(_ contact: SKPhysicsContact) {
@@ -127,11 +141,35 @@ var baba = [SKSpriteNode]()
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        if (babaMovingUp == true) {
+            
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // get the first "tap" on the screen
+        let locationtouched = touches.first
+        
+        if (locationtouched == nil) {
+            // if for some reason the "tap" return as null, then exit
+            return
+        }
+        let mousePosition = locationtouched!.location(in:self)
+        print("mouseX = \(mousePosition.x)")
+        print("mouseY = \(mousePosition.y)")
+        print("-------")
+        
+        self.MouseX = mousePosition.x
+        self.MouseY = mousePosition.y
+        
+        
+        let touchLocation = locationtouched!.location(in: self)
+        
+        print("User tapped screen at: \(touchLocation.x.rounded()),\(touchLocation.y.rounded())")
+        
+        
     }
+    
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     }
